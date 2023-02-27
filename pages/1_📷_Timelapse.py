@@ -55,6 +55,6 @@ st.session_state["bands"] = None
 st.session_state["palette"] = None
 st.session_state["vis_params"] = None
 
-m = leafmap.Map(center=[40, -100], zoom=4, tiles="stamentoner")
+m = leafmap.Map(center=[53, 49], zoom=4, tiles="stamentoner")
 m.to_streamlit(height=700)
 
