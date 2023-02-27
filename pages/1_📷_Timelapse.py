@@ -56,7 +56,6 @@ st.session_state["vis_params"] = None
 
 m = leafmap.Map(center=[40, -100], zoom=4, tiles="stamentoner")
 m.add_heatmap(
-            filepath,
             latitude="latitude",
             longitude="longitude",
             value="pop_max",
