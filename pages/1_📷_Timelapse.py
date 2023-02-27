@@ -124,20 +124,17 @@ m = leafmap.Map(center=(lat, lon), draw_export=True)
 m.add_gdf(gdf, layer_name=layer_name)
 
 
-# m.add_vector(file_path, layer_name=layer_name)
-m.to_streamlit(width=width, height=height)
+# # m.add_vector(file_path, layer_name=layer_name)
+# m.to_streamlit(width=width, height=height)
 
 
 
+# m= geemap.Map.addLayer(ee_data, {}, "US States EE")
 
-
-
-m= geemap.Map.addLayer(ee_data, {}, "US States EE")
-
-collection = ee.ImageCollection('COPERNICUS/S2_SR') \
-    .filterBounds(roi) \
-    .filterDate(start_date, end_date) \
-    .filterMetadata ('CLOUDY_PIXEL_PERCENTAGE', 'Less_Than', 15) \
-    .filterMetadata ('NODATA_PIXEL_PERCENTAGE', 'Less_Than', 70) \
-    .map(Cloudmask)\
-        .mean()
+# collection = ee.ImageCollection('COPERNICUS/S2_SR') \
+#     .filterBounds(roi) \
+#     .filterDate(start_date, end_date) \
+#     .filterMetadata ('CLOUDY_PIXEL_PERCENTAGE', 'Less_Than', 15) \
+#     .filterMetadata ('NODATA_PIXEL_PERCENTAGE', 'Less_Than', 70) \
+#     .map(Cloudmask)\
+#         .mean()
