@@ -11,6 +11,7 @@ import geemap.foliumap as geemap
 from datetime import date
 from shapely.geometry import Polygon
 import json
+import leafmap
 
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -52,3 +53,6 @@ st.session_state["ee_asset_id"] = None
 st.session_state["bands"] = None
 st.session_state["palette"] = None
 st.session_state["vis_params"] = None
+
+m = leafmap.Map(center=[40, -100], zoom=4, tiles="stamentoner")
+m.to_streamlit(height=700)
