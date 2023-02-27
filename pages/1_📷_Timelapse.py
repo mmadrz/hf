@@ -12,6 +12,8 @@ from datetime import date
 from shapely.geometry import Polygon
 import json
 import leafmap
+from geemap import geojson_to_ee, ee_to_geojson
+
 
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -72,8 +74,9 @@ roi_pass = st.file_uploader("Choose the json file of your ROI")
 if roi_pass is not None:
     global roi
     roi = json.loads(json.dumps(roi_pass))
-    feature = ee.Feature(roi, {})
-    roi = feature.geometry()
+
+ee_data = geojson_to_ee(roi)
+m= geemap.Map.addLayer(ee_data, {}, "US States EE")
 
 collection = ee.ImageCollection('COPERNICUS/S2_SR') \
     .filterBounds(roi) \
