@@ -92,23 +92,9 @@ def save_uploaded_file(file_content, file_name):
 
 st.title("Upload Vector Data")
 
-row1_col1, row1_col2 = st.columns([2, 1])
+
 width = 950
 height = 600
-
-with row1_col2:
-
-    backend = st.selectbox(
-        "Select a plotting backend", ["folium", "kepler.gl", "pydeck"], index=2
-    )
-
-    if backend == "folium":
-        import leafmap.foliumap as leafmap
-    elif backend == "kepler.gl":
-        import leafmap.kepler as leafmap
-    elif backend == "pydeck":
-        import leafmap.deck as leafmap
-
 url = st.text_input(
             "Enter a URL to a vector dataset",
             "https://github.com/giswqs/streamlit-geospatial/raw/master/data/us_states.geojson",
