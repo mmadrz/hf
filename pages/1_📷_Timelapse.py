@@ -90,8 +90,7 @@ def Cloudmask(image):
     return image.updateMask(mask)
 
 roi_pass = st.file_uploader("Choose the json file of your ROI")
-roi = uploaded_file_to_gdf(roi_pass)
-
+roi = geemap.geojson_to_ee(roi_pass)
 
 ee_data = geojson_to_ee(roi)
 m= geemap.Map.addLayer(ee_data, {}, "US States EE")
