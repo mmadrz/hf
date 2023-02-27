@@ -89,8 +89,7 @@ url = st.text_input(
         )
 
 data = st.file_uploader(
-            "Upload a vector dataset", type=["geojson", "kml", "zip", "tab"],
-            type(str)
+            "Upload a vector dataset", type=["geojson", "kml", "zip", "tab"]
         )
 container = st.container()
 
@@ -119,10 +118,10 @@ m
 
 # m= geemap.Map.addLayer(ee_data, {}, "US States EE")
 
-#     .filterMetadata ('NODATA_PIXEL_PERCENTAGE', 'Less_Than', 70) \
-#     .map(Cloudmask)\
-#         .mean()
 # collection = ee.ImageCollection('COPERNICUS/S2_SR') \
 #     .filterBounds(roi) \
 #     .filterDate(start_date, end_date) \
 #     .filterMetadata ('CLOUDY_PIXEL_PERCENTAGE', 'Less_Than', 15) \
+#     .filterMetadata ('NODATA_PIXEL_PERCENTAGE', 'Less_Than', 70) \
+#     .map(Cloudmask)\
+#         .mean()
