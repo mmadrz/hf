@@ -71,7 +71,7 @@ roi_pass = st.file_uploader("Choose the json file of your ROI")
 
 if roi_pass is not None:
     global roi
-    roi = json.loads(roi_pass)
+    roi = json.loads(json.dumps(roi_pass))
     feature = ee.Feature(roi, {})
     roi = feature.geometry()
 
