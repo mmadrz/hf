@@ -127,40 +127,27 @@ if data or url:
         file_path = url
         layer_name = url.split("/")[-1].split(".")[0]
 
-    with row1_col1:
-        if file_path.lower().endswith(".kml"):
-            fiona.drvsupport.supported_drivers["KML"] = "rw"
-            gdf = gpd.read_file(file_path, driver="KML")
-        else:
-            gdf = gpd.read_file(file_path)
-        lon, lat = leafmap.gdf_centroid(gdf)
-        if backend == "pydeck":
+    if file_path.lower().endswith(".kml"):
+        fiona.drvsupport.supported_drivers["KML"] = "rw"
+        gdf = gpd.read_file(file_path, driver="KML")
+    else:
+        gdf = gpd.read_file(file_path)
+    lon, lat = leafmap.gdf_centroid(gdf)
+ 
+m = leafmap.Map(center=(lat, lon))
+m.add_gdf(gdf)
+st.pydeck_chart(m)
 
-            column_names = gdf.columns.values.tolist()
-            random_column = None
-            with container:
-                random_color = st.checkbox("Apply random colors", True)
-                if random_color:
-                    random_column = st.selectbox(
-                        "Select a column to apply random colors", column_names
-                    )
 
-            m = leafmap.Map(center=(lat, lon))
-            m.add_gdf(gdf, random_color_column=random_column)
-            st.pydeck_chart(m)
+m = leafmap.Map(center=(lat, lon), draw_export=True)
+m.add_gdf(gdf, layer_name=layer_name)
+# m.add_vector(file_path, layer_name=layer_name)
+if backend == "folium":
+    m.zoom_to_gdf(gdf)
+m.to_streamlit(width=width, height=height)
 
-        else:
-            m = leafmap.Map(center=(lat, lon), draw_export=True)
-            m.add_gdf(gdf, layer_name=layer_name)
-            # m.add_vector(file_path, layer_name=layer_name)
-            if backend == "folium":
-                m.zoom_to_gdf(gdf)
-            m.to_streamlit(width=width, height=height)
-
-else:
-    with row1_col1:
-        m = leafmap.Map()
-        st.pydeck_chart(m)
+m = leafmap.Map()
+st.pydeck_chart(m)
 
 
 
