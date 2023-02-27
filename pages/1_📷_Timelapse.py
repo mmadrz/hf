@@ -113,12 +113,12 @@ if data or url:
         file_path = url
         layer_name = url.split("/")[-1].split(".")[0]
 
-    if file_path.lower().endswith(".kml"):
-        fiona.drvsupport.supported_drivers["KML"] = "rw"
-        gdf = gpd.read_file(file_path, driver="KML")
-    else:
-        gdf = gpd.read_file(file_path)
-    lon, lat = leafmap.gdf_centroid(gdf)
+if file_path.lower().endswith(".kml"):
+    fiona.drvsupport.supported_drivers["KML"] = "rw"
+    gdf = gpd.read_file(file_path, driver="KML")
+else:
+    gdf = gpd.read_file(file_path)
+lon, lat = leafmap.gdf_centroid(gdf)
  
 m = leafmap.Map(center=(lat, lon), draw_export=True)
 m.add_gdf(gdf, layer_name=layer_name)
