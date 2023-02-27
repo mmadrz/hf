@@ -68,11 +68,11 @@ def Cloudmask(image):
 
 
 roi_pass = st.file_uploader("Choose the json file of your ROI")
+
 if roi_pass is not None:
     roi = json.loads(roi_pass)
-
-feature = ee.Feature(roi, {})
-roi = feature.geometry()
+    feature = ee.Feature(roi, {})
+    roi = feature.geometry()
 
 
 collection = ee.ImageCollection('COPERNICUS/S2_SR') \
