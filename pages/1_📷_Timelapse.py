@@ -128,8 +128,7 @@ st.pydeck_chart(m)
 m = leafmap.Map(center=(lat, lon), draw_export=True)
 m.add_gdf(gdf, layer_name=layer_name)
 # m.add_vector(file_path, layer_name=layer_name)
-if backend == "folium":
-    m.zoom_to_gdf(gdf)
+m.zoom_to_gdf(gdf)
 m.to_streamlit(width=width, height=height)
 
 m = leafmap.Map()
