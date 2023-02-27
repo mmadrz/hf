@@ -122,10 +122,12 @@ else:
 lon, lat = leafmap.gdf_centroid(gdf)
 m = leafmap.Map(center=(lat, lon), draw_export=True)
 m.add_gdf(gdf, layer_name=layer_name)
+st.pydeck_chart(m)
 
 
 # # m.add_vector(file_path, layer_name=layer_name)
 # m.to_streamlit(width=width, height=height)
+
 
 
 
