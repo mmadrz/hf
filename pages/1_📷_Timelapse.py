@@ -112,6 +112,8 @@ lon, lat = leafmap.gdf_centroid(gdf)
 
 
 import leafmap.foliumap as leafmap
+m = leafmap.Map(center=(lat, lon), draw_export=True)
+m.add_gdf(gdf, layer_name=layer_name)
 m.zoom_to_gdf(gdf)
 m.to_streamlit(width=width, height=height)
 
