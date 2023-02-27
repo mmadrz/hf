@@ -30,20 +30,22 @@ collection = st.selectbox(
             ],
             index=1,
         )
+
+
 json_data = st.secrets["json_data"]
 service_account = st.secrets["service_account"]
+
 # Preparing values
 json_object = json.loads(json_data, strict=False)
 service_account = json_object['client_email']
 json_object = json.dumps(json_object)
+
 # Authorising the app
 credentials = ee.ServiceAccountCredentials(service_account, key_data=json_object)
 ee.Initialize(credentials)
 
-
 start_date = st.date_input("Select the start date:")
 end_date = st.date_input("Select the end date:")
-
 
 m = geemap.Map(
     basemap="HYBRID",
@@ -65,8 +67,6 @@ def Cloudmask(image):
     .And(qa.bitwiseAnd(cirrus_type).eq(0))
     return image.updateMask(mask)
 
-
-
 roi_pass = st.file_uploader("Choose the json file of your ROI")
 
 if roi_pass is not None:
@@ -75,13 +75,10 @@ if roi_pass is not None:
     feature = ee.Feature(roi, {})
     roi = feature.geometry()
 
-
-
 collection = ee.ImageCollection('COPERNICUS/S2_SR') \
     .filterBounds(roi) \
     .filterDate(start_date, end_date) \
     .filterMetadata ('CLOUDY_PIXEL_PERCENTAGE', 'Less_Than', 15) \
     .filterMetadata ('NODATA_PIXEL_PERCENTAGE', 'Less_Than', 70) \
     .map(Cloudmask)\
-    .mean()
-
+        .mean()
