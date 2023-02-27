@@ -122,20 +122,9 @@ lon, lat = leafmap.gdf_centroid(gdf)
 
 
 if backend == "pydeck":
-
-    column_names = gdf.columns.values.tolist()
-    random_column = None
-    with container:
-        random_color = st.checkbox("Apply random colors", True)
-        if random_color:
-            random_column = st.selectbox(
-                "Select a column to apply random colors", column_names
-            )
-
     m = leafmap.Map(center=(lat, lon))
-    m.add_gdf(gdf, random_color_column=random_column)
+    m.add_gdf(gdf)
     st.pydeck_chart(m)
-
 else:
     m = leafmap.Map(center=(lat, lon), draw_export=True)
     m.add_gdf(gdf, layer_name=layer_name)
