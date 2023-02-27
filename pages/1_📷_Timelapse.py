@@ -55,9 +55,6 @@ st.session_state["bands"] = None
 st.session_state["palette"] = None
 st.session_state["vis_params"] = None
 
-m = leafmap.Map(center=[53, 49], zoom=4, tiles="stamentoner")
-m.to_streamlit(height=700)
-
 
 m = geemap.Map(
     basemap="HYBRID",
@@ -68,4 +65,32 @@ m = geemap.Map(
 )
 m.add_basemap("ROADMAP")
 m.to_streamlit(height=700)
+
+# Create a cloud mask function
+def Cloudmask(image):
+# Exclude the pixels that represent clouds and cirrus on the image (with the QA60 Band)
+    qa = image.select('QA60')
+    cloud_type = 1 << 10
+    cirrus_type = 1 << 11
+    mask = qa.bitwiseAnd(cloud_type).eq(0) \
+    .And(qa.bitwiseAnd(cirrus_type).eq(0))
+    return image.updateMask(mask)
+
+
+
+roi_pass = st.file_uploader("Choose the json file of your ROI")
+if roi_pass is not None:
+    roi = json.loads(roi_pass)
+
+feature = ee.Feature(roi, {})
+roi = feature.geometry()
+
+
+collection = ee.ImageCollection('COPERNICUS/S2_SR') \
+    .filterBounds(roi) \
+    .filterDate(start_date, end_date) \
+    .filterMetadata ('CLOUDY_PIXEL_PERCENTAGE', 'Less_Than', 15) \
+    .filterMetadata ('NODATA_PIXEL_PERCENTAGE', 'Less_Than', 70) \
+    .map(Cloudmask)\
+    .mean()
 
