@@ -119,15 +119,15 @@ if data or url:
     else:
         gdf = gpd.read_file(file_path)
     lon, lat = leafmap.gdf_centroid(gdf)
-
+ 
 m = leafmap.Map(center=(lat, lon), draw_export=True)
 m.add_gdf(gdf, layer_name=layer_name)
+
+
 # m.add_vector(file_path, layer_name=layer_name)
-m.zoom_to_gdf(gdf)
 m.to_streamlit(width=width, height=height)
 
-m = leafmap.Map()
-st.pydeck_chart(m)
+
 
 
 
