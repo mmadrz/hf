@@ -60,17 +60,6 @@ m = geemap.Map(
 m.add_basemap("ROADMAP")
 m.to_streamlit(height=700)
 
-# Create a cloud mask function
-def Cloudmask(image):
-# Exclude the pixels that represent clouds and cirrus on the image (with the QA60 Band)
-    qa = image.select('QA60')
-    cloud_type = 1 << 10
-    cirrus_type = 1 << 11
-    mask = qa.bitwiseAnd(cloud_type).eq(0) \
-    .And(qa.bitwiseAnd(cirrus_type).eq(0))
-    return image.updateMask(mask)
-
-
 
 
 def save_uploaded_file(file_content, file_name):
@@ -92,7 +81,6 @@ def save_uploaded_file(file_content, file_name):
 
 st.title("Upload Vector Data")
 
-
 width = 950
 height = 600
 url = st.text_input(
@@ -101,7 +89,8 @@ url = st.text_input(
         )
 
 data = st.file_uploader(
-            "Upload a vector dataset", type=["geojson", "kml", "zip", "tab"]
+            "Upload a vector dataset", type=["geojson", "kml", "zip", "tab"],
+            type(str)
         )
 container = st.container()
 
@@ -130,10 +119,10 @@ m
 
 # m= geemap.Map.addLayer(ee_data, {}, "US States EE")
 
+#     .filterMetadata ('NODATA_PIXEL_PERCENTAGE', 'Less_Than', 70) \
+#     .map(Cloudmask)\
+#         .mean()
 # collection = ee.ImageCollection('COPERNICUS/S2_SR') \
 #     .filterBounds(roi) \
 #     .filterDate(start_date, end_date) \
 #     .filterMetadata ('CLOUDY_PIXEL_PERCENTAGE', 'Less_Than', 15) \
-#     .filterMetadata ('NODATA_PIXEL_PERCENTAGE', 'Less_Than', 70) \
-#     .map(Cloudmask)\
-#         .mean()
