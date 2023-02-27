@@ -58,3 +58,14 @@ st.session_state["vis_params"] = None
 m = leafmap.Map(center=[53, 49], zoom=4, tiles="stamentoner")
 m.to_streamlit(height=700)
 
+
+m = geemap.Map(
+    basemap="HYBRID",
+    plugin_Draw=True,
+    Draw_export=True,
+    locate_control=True,
+    plugin_LatLngPopup=False,
+)
+m.add_basemap("ROADMAP")
+m.to_streamlit(height=700)
+
