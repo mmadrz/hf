@@ -14,6 +14,26 @@ import json
 import leafmap
 from geemap import geojson_to_ee, ee_to_geojson
 
+def uploaded_file_to_gdf(data):
+    import tempfile
+    import os
+    import uuid
+
+    _, file_extension = os.path.splitext(data.name)
+    file_id = str(uuid.uuid4())
+    file_path = os.path.join(tempfile.gettempdir(), f"{file_id}{file_extension}")
+
+    with open(file_path, "wb") as file:
+        file.write(data.getbuffer())
+
+    if file_path.lower().endswith(".kml"):
+        fiona.drvsupport.supported_drivers["KML"] = "rw"
+        gdf = gpd.read_file(file_path, driver="KML")
+    else:
+        gdf = gpd.read_file(file_path)
+
+    return gdf
+
 
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -70,10 +90,8 @@ def Cloudmask(image):
     return image.updateMask(mask)
 
 roi_pass = st.file_uploader("Choose the json file of your ROI")
+roi = uploaded_file_to_gdf(roi_pass)
 
-if roi_pass is not None:
-    global roi
-    roi = json.loads(json.dumps(roi_pass))
 
 ee_data = geojson_to_ee(roi)
 m= geemap.Map.addLayer(ee_data, {}, "US States EE")
