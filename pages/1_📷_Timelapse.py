@@ -81,16 +81,6 @@ def save_uploaded_file(file_content, file_name):
 
 
 
-backend = st.selectbox(
-            "Select a plotting backend", ["folium", "kepler.gl", "pydeck"], index=2
-        )
-
-if backend == "folium":
-        import leafmap.foliumap as leafmap
-elif backend == "kepler.gl":
-        import leafmap.kepler as leafmap
-elif backend == "pydeck":
-        import leafmap.deck as leafmap
 
 
 width = 950
@@ -121,17 +111,9 @@ else:
 lon, lat = leafmap.gdf_centroid(gdf)
 
 
-if backend == "pydeck":
-    m = leafmap.Map(center=(lat, lon))
-    m.add_gdf(gdf)
-    st.pydeck_chart(m)
-else:
-    m = leafmap.Map(center=(lat, lon), draw_export=True)
-    m.add_gdf(gdf, layer_name=layer_name)
-    # m.add_vector(file_path, layer_name=layer_name)
-    if backend == "folium":
-        m.zoom_to_gdf(gdf)
-    m.to_streamlit(width=width, height=height)
+import leafmap.foliumap as leafmap
+m.zoom_to_gdf(gdf)
+m.to_streamlit(width=width, height=height)
 
 
 # m.add_vector(file_path, layer_name=layer_name)
