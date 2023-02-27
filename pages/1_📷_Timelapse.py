@@ -107,8 +107,9 @@ if file_path.lower().endswith(".kml"):
 else:
     gdf = gpd.read_file(file_path)
 
-m.add_geojson(gdf, layer_name="Cable lines")
+m.add_geojson(data, layer_name="Cable lines")
 m
+m.to_streamlit(height=700)
 
 # # m.add_vector(file_path, layer_name=layer_name)
 # m.to_streamlit(width=width, height=height)
